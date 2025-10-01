@@ -75,6 +75,4 @@ npm start
 ## API Requirements
 
 - **Streaming endpoint:** `/ai/stream` (POST, streams AI response chunks)
-- **Secondary endpoint:** `/ai/extra` (POST, returns JSON)
-- Both endpoints should accept a prompt/message and return AI-generated text for the respective model.
 
