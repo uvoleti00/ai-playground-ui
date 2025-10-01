@@ -1,62 +1,80 @@
 # AI Model Playground UI
 
-A small Next.js app that demonstrates a two-column chat UI with streaming AI responses. The app shows user messages and streaming AI replies (left/right alignment), supports Enter to send (Shift+Enter for newline), and triggers multiple API calls per send (streaming + secondary).
+A modern Next.js application featuring a two-column chat interface for real-time streaming AI responses. Users can send messages with Enter (Shift+Enter for newline), view side-by-side responses from multiple AI models, and enjoy a fixed bottom input area for a smooth chat experience.
 
-## Features
-- Next.js (App Router) client component chat UI
-- Two chat columns (e.g. GPT5 and GPT5mini)
-- Streaming API support (append chunks progressively)
-- Disabled Send button + loader while requests are in flight
-- Responsive layout that keeps the composer fixed at the bottom
-- Simple componentized structure (Chat, ChatColumn, MessageList, Composer)
+## Key Features
+
+- **Next.js (App Router)** client-side chat interface
+- **Dual chat columns** for comparing AI models (e.g., GPT5 vs GPT5mini)
+- **Streaming AI responses** that display progressively as they arrive
+- **Multiple API calls per message** (streaming + secondary requests)
+- **Send button feedback** with disabled state and loader during requests
+- **Responsive layout**: scrollable message area with fixed bottom composer
+- **Reusable components**: Chat, ChatColumn, MessageList, Composer, etc.
 
 ## Prerequisites
-- Node.js 18+ or compatible
+
+- Node.js 18+ (or compatible)
 - npm, yarn, or pnpm
-- (Optional) An AI streaming backend or mock that supports HTTP streaming
+- Optional: AI backend supporting HTTP streaming
 
-## Quick start (development)
-1. Install dependencies
-   - npm:
-     ```bash
-     npm install
-     ```
-   - pnpm:
-     ```bash
-     pnpm install
-     ```
-   - yarn:
-     ```bash
-     yarn
-     ```
+## Setup Instructions
 
-2. Configure environment (if needed)
-   - Create a `.env.local` at project root for any environment variables your API needs.
-   - Example:
-     ```
-     NEXT_PUBLIC_API_BASE=http://localhost:3001
-     ```
-   - The app expects endpoints like `/ai/stream` and `/ai/extra` (adjust code or env as required).
+### 1. Install Dependencies
 
-3. Run dev server
-   - npm:
-     ```bash
-     npm run dev
-     ```
-   - pnpm:
-     ```bash
-     pnpm dev
-     ```
-   - yarn:
-     ```bash
-     yarn dev
-     ```
+```bash
+# npm
+npm install
 
-4. Open the app
-   - Visit http://localhost:3000 in your browser.
+# pnpm
+pnpm install
 
-## Build & production
-- Build:
-  ```bash
-  npm run build
+# yarn
+yarn
+```
+
+### 2. Configure Environment
+
+- Create a `.env.local` file at the project root
+- Example configuration:
+  ```env
+  NEXT_PUBLIC_API_BASE=http://localhost:3001
   ```
+- Ensure your API provides `/ai/stream` and `/ai/extra` endpoints.
+
+### 3. Run Development Server
+
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+
+# yarn
+yarn dev
+```
+
+Open http://localhost:3000 in your browser.
+
+### 4. Build & Production
+
+```bash
+npm run build
+npm start
+```
+
+## Project Structure
+
+- `src/app/chat/page.tsx` — Main chat page, handles state, streaming, and API calls
+- `src/app/chat/ChatColumn.tsx` — Displays a single chat column (per model)
+- `src/components/` — Shared UI components (MessageBubble, MessageList, Composer, etc.)
+- `src/shared/` — Utilities and helpers (e.g., `streamModelReply`)
+- `src/app/layout.tsx` — Layout wrapper with `flex flex-col min-h-screen`
+
+## API Requirements
+
+- **Streaming endpoint:** `/ai/stream` (POST, streams AI response chunks)
+- **Secondary endpoint:** `/ai/extra` (POST, returns JSON)
+- Both endpoints should accept a prompt/message and return AI-generated text for the respective model.
+
