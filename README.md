@@ -1,4 +1,4 @@
-# AI Model Playground UI
+# AI Playground UI
 
 A modern Next.js application featuring a two-column chat interface for real-time streaming AI responses. Users can send messages with Enter (Shift+Enter for newline), view side-by-side responses from multiple AI models, and enjoy a fixed bottom input area for a smooth chat experience.
 
