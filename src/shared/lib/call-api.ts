@@ -2,11 +2,12 @@
 export async function streamModelReply(
     model: string,
     prompt: string,
-    onMessage: (id: string, chunk: string, isDone?: boolean) => void,
+    onMessage: (id: string, chunk: string, status: string, timeTaken?: number) => void,
     token: string
 ){
     const aiId = `${model}-${Date.now()}`;
-  onMessage(aiId, "", false); // init empty message
+    const startTime = Date.now();
+    onMessage(aiId, "", "typing");
 
   try {
     const apiHost = process.env.NEXT_PUBLIC_API_HOST || "";
@@ -23,14 +24,16 @@ export async function streamModelReply(
     });
 
     if (!res.ok) {
-      onMessage(aiId, `API error ${res.status}`, true);
+      const duration = Date.now() - startTime;
+      onMessage(aiId, `API error ${res.status}`, "error", duration);
       return;
     }
 
     if (!res.body) {
       const data = await res.json().catch(() => null);
       const reply = typeof data === "string" ? data : data?.reply ?? "No reply";
-      onMessage(aiId, reply, true);
+      const duration = Date.now() - startTime;
+      onMessage(aiId, reply, "completed", duration);
       return;
     }
 
@@ -42,11 +45,13 @@ export async function streamModelReply(
       done = !!result.done;
       if (result.value) {
         const chunk = decoder.decode(result.value, { stream: true });
-        onMessage(aiId, chunk);
+        onMessage(aiId, chunk, "streaming", Date.now() - startTime);
       }
     }
-    onMessage(aiId, "", true);
+    const duration = Date.now() - startTime;
+    onMessage(aiId, "", "completed", duration);
   } catch (err) {
-    onMessage(aiId, `Error: ${(err as Error).message}`, true);
+    const duration = Date.now() - startTime;
+    onMessage(aiId, `Error: ${(err as Error).message}`, "error", duration);
   }
 }
