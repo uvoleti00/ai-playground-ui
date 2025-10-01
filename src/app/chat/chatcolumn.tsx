@@ -54,10 +54,8 @@ export function ChatColumn(props: Props): ReactNode {
                     ol: ({ node, ...props }) => (
                       <ol className="list-decimal pl-6 mb-3" {...props} />
                     ),
-                    code: ({ node, inline, ...props }) =>
-                      inline ? (
-                        <code className="bg-gray-200 px-1 rounded" {...props} />
-                      ) : (
+                    code: ({ node, ...props }) =>
+                       (
                         <pre className="bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto">
                           <code {...props} />
                         </pre>
